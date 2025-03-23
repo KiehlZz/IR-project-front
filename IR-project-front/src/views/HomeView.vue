@@ -1,7 +1,7 @@
 <template>
   <div class="w-full max-w-9xl mx-auto">
     <!-- Navbar -->
-    <HeaderCard :loggedIn="!!user" @login="goToLogin" @logout="logout" />
+    <HeaderCard :loggedIn="!!user" @login="goToLogin" @logout="logout" @register="goToRegister"/>
 
     <!-- Main content fills remaining space -->
     <main class="flex-1 flex flex-col items-center justify-start py-10 px-4 overflow-y-auto">
@@ -54,4 +54,9 @@ const logout = () => {
   localStorage.removeItem('user')
   user.value = null
 }
+
+const goToRegister = () => {
+  router.push('/register')
+}
+
 </script>
