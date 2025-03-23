@@ -43,17 +43,33 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const router = useRouter()
 
-const handleRegister = () => {
+const handleRegister = async () => {
   if (password.value !== confirmPassword.value) {
     alert('Passwords do not match')
     return
   }
-  alert(`Register with ${email.value} / ${password.value}`)
-  // TODO: API register call
+
+  try {
+    const response = await axios.post('http://localhost:5000/register', {
+      username: email.value,
+      password: password.value,
+    })
+
+    alert(response.data.message)
+
+    // instantly logged in after registering
+    localStorage.setItem('user', email.value)
+    router.push('/')
+  } catch (error) {
+    alert(error.response?.data?.error || 'Registration failed')
+  }
 }
 </script>
