@@ -42,9 +42,17 @@ const results = ref([])
 const handleSearch = async (query) => {
   const res = await axios.get('http://localhost:5000/search', {
     params: { q: query },
-  })
-  results.value = res.data
-}
+  });
+
+  if (res.data.suggested && res.data.suggested !== query) {
+    if (confirm(`Did you mean "${res.data.suggested}"?`)) {
+      await handleSearch(res.data.suggested);
+      return;
+    }
+  }
+
+  results.value = res.data.results;
+};
 
 const goToLogin = () => {
   router.push('/login')
