@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SearchView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import FolderView from '@/views/FolderView.vue'
 
 const routes = [
   {
@@ -19,10 +20,27 @@ const routes = [
     name: 'Register',
     component: RegisterView,
   },
-  // Add more routes here when you build features like login, bookmarks, etc.
+  {
+    path: '/folders',
+    name: 'Folders',
+    component: FolderView,
+  }
+
 ]
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+// Global auth guard
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('user')
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/login')
+  } else {
+    next()
+  }
+})
+
+export default router

@@ -1,16 +1,15 @@
 <template>
-  <div
-    class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 to-blue-200"
-  >
-    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Welcome 👋</h2>
-      <form @submit.prevent="handleLogin" class="space-y-4">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#F3E9DC] via-[#FDF6EC] to-[#F3E9DC]">
+    <div class="bg-white/90 border border-[#E6D3C4] rounded-3xl shadow-xl p-10 w-full max-w-md">
+      <h2 class="text-3xl font-extrabold text-center text-[#4B3621] mb-6">Welcome Back ☕</h2>
+
+      <form @submit.prevent="handleLogin" class="space-y-5">
         <input
           v-model="email"
           type="email"
           placeholder="Email"
           autocomplete="off"
-          class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400"
+          class="w-full px-4 py-2 border border-[#D6B49C] rounded-md bg-[#FFFDF8] text-[#4B3621] focus:ring-2 focus:ring-[#B08968] placeholder:text-[#A47148]"
           required
         />
         <input
@@ -18,23 +17,28 @@
           type="password"
           placeholder="Password"
           autocomplete="off"
-          class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400"
+          class="w-full px-4 py-2 border border-[#D6B49C] rounded-md bg-[#FFFDF8] text-[#4B3621] focus:ring-2 focus:ring-[#B08968] placeholder:text-[#A47148]"
           required
         />
+
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+          class="w-full bg-[#A47148] text-white font-semibold py-2 rounded-md hover:bg-[#8B5E3C] transition shadow-md"
         >
-          Log In
+          🍁 Log In
         </button>
       </form>
-      <p class="text-center text-sm text-gray-600 mt-4">
+
+      <p class="text-center text-sm text-[#6B4C3B] mt-6">
         Don't have an account?
-        <RouterLink to="/register" class="text-blue-500 hover:underline">Register</RouterLink>
+        <RouterLink to="/register" class="font-semibold underline hover:text-[#4B3621] transition">
+          Register here
+        </RouterLink>
       </p>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue'
@@ -43,24 +47,24 @@ import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
+const error = ref('')
 const router = useRouter()
 
 const handleLogin = async () => {
+  error.value = ''
   try {
-    const response = await axios.post('http://localhost:5000/login', {
+    const res = await axios.post('http://localhost:5000/login', {
       username: email.value,
       password: password.value,
     })
 
-    alert(response.data.message)
+    // Save user session
+    localStorage.setItem('user', res.data.user)
 
-    // Optionally save to localStorage
-    localStorage.setItem('user', response.data.user)
-
-    // Navigate to homepage
+    // Redirect to home page
     router.push('/')
-  } catch (error) {
-    alert(error.response?.data?.error || 'Login failed')
+  } catch (err) {
+    error.value = err.response?.data?.message || 'Login failed. Please try again.'
   }
 }
 </script>
