@@ -24,7 +24,20 @@ const routes = [
     path: '/folders',
     name: 'Folders',
     component: FolderView,
+  },
+  {
+    path: '/folders/:id/:name',
+    name: 'BookmarkView',
+    component: () => import('@/views/BookmarkView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/folders/:id/:name',
+    name: 'FolderDetail',
+    component: () => import('@/views/BookmarkView.vue'),
+    meta: { requiresAuth: true }
   }
+  
 
 ]
 

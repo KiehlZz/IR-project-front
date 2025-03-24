@@ -86,7 +86,13 @@ const createFolder = async () => {
 }
 
 const openFolder = (folder) => {
-  router.push({ name: 'FolderDetail', params: { id: folder.id, name: folder.name } })
+  router.push({
+    name: 'BookmarkView',
+    params: {
+      id: folder.id,
+      name: folder.name
+    }
+  })
 }
 
 const logout = () => {
